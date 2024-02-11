@@ -13,6 +13,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
@@ -23,6 +24,7 @@ import java.util.function.Consumer
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     @ExceptionHandler(EntityNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleEntityNotFoundException(
         ex: EntityNotFoundException
     ): ResponseEntity<Any> {
@@ -34,6 +36,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(EntityExistsException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleEntityExistsxception(
         ex: EntityExistsException): ResponseEntity<Any> {
         return buildResponseEntity(
@@ -43,6 +46,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         )
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     override fun handleMethodArgumentNotValid(
         ex: MethodArgumentNotValidException,
         headers: HttpHeaders,
@@ -64,6 +68,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         return buildResponseEntity(HttpStatus.BAD_REQUEST, "Informed argument(s) validation error(s)", errors)
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     override fun handleHttpMessageNotReadable(
         ex: HttpMessageNotReadableException,
         headers: HttpHeaders,
@@ -76,7 +81,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         )
     }
 
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     override fun handleHttpRequestMethodNotSupported(
         ex: HttpRequestMethodNotSupportedException,
         headers: HttpHeaders,
