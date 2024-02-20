@@ -13,9 +13,9 @@ data class Category(
         @Column(nullable = false, unique = true)
         var name: String,
 
-        @Column(nullable = false)
+        @Column
         var active: Boolean,
 
-        @Column(nullable = false)
+        @Column
         var type: String
 )

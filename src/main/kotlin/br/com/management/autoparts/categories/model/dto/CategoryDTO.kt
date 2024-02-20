@@ -7,6 +7,6 @@ data class CategoryDTO (
     @field:NotEmpty
     var name: String,
     var active: Boolean,
-    @field:NotEmpty
+//    @field:NotEmpty
     var type: String) {
 }

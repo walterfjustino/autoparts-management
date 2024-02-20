@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/categories")
-class CategoryController(
-    private val service: CategoryService
-) {
+class CategoryController(private val service: CategoryService) {
 
     @PostMapping
     fun create(@RequestBody @Valid categoryDTO: CategoryDTO): ResponseEntity<CategoryDTO> {
@@ -34,11 +32,17 @@ class CategoryController(
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long ,@RequestBody @Valid categoryDTO: CategoryDTO): ResponseEntity<CategoryDTO> {
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(categoryDTO))
+    fun update(@PathVariable id: Long ,@RequestBody categoryDTO: CategoryDTO): ResponseEntity<CategoryDTO> {
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, categoryDTO))
     }
 
-    fun deleteById(@PathVariable id: Long) {
-        ResponseEntity.status(HttpStatus.NO_CONTENT).body(service.delete(id))
+    @PatchMapping("/{id}")
+    fun updatePartial(@PathVariable id: Long, @RequestBody fields: Map<String, Any>): ResponseEntity<CategoryDTO> {
+        return ResponseEntity.status(HttpStatus.OK).body(service.updatePartial(id, fields))
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteById(@PathVariable id: Long) : ResponseEntity<Any>{
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(service.delete(id))
     }
 }
