@@ -1,0 +1,120 @@
+shouldBeCreateCategory:
+  input: >-
+    {
+        "id": 4,
+        "name": "Brinquedos",
+        "active": true,
+        "type": "NORMAL"
+    }
+
+shouldBeReturnListCategories:
+  input: >-
+    [
+      {
+        "id": 1,
+        "name": "Monitores",
+        "active": true,
+        "type": "NORMAL"
+      },
+      {
+        "id": 2,
+        "name": "Tvs",
+        "active": true,
+        "type": "NORMAL"
+      },
+      {
+        "id": 3,
+        "name": "Celulares",
+        "active": true,
+        "type": "NORMAL"
+      }
+    ]
+
+shouldBeReturnPageListCategories:
+  input: >-
+    {
+        "content": [
+            {
+                "id": 1,
+                "name": "Smartphones",
+                "active": true,
+                "type": "NORMAL"
+            },
+            {
+                "id": 2,
+                "name": "Tvs",
+                "active": true,
+                "type": "NORMAL"
+            },
+            {
+                "id": 3,
+                "name": "Monitores",
+                "active": true,
+                "type": "NORMAL"
+            },
+            {
+                "id": 52,
+                "name": "Eletrodomesticos",
+                "active": true,
+                "type": "NORMAL"
+            },
+            {
+                "id": 102,
+                "name": "Cama, mesa e banho",
+                "active": true,
+                "type": "NORMAL"
+            }
+        ],
+        "pageable": "INSTANCE",
+        "totalPages": 1,
+        "totalElements": 5,
+        "last": true,
+        "size": 5,
+        "number": 0,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "numberOfElements": 5,
+        "first": true,
+        "empty": false
+    }
+
+shouldBeReturnedPageSearchCategories:
+  input: >-
+    {
+        "content": [
+            {
+                "id": 3,
+                "name": "Monitores",
+                "active": true,
+                "type": "NORMAL"
+            }
+        ],
+        "pageable": {
+            "pageNumber": 0,
+            "pageSize": 20,
+            "sort": {
+                "empty": false,
+                "sorted": true,
+                "unsorted": false
+            },
+            "offset": 0,
+            "paged": true,
+            "unpaged": false
+        },
+        "totalPages": 1,
+        "totalElements": 1,
+        "last": true,
+        "size": 20,
+        "number": 0,
+        "sort": {
+            "empty": false,
+            "sorted": true,
+            "unsorted": false
+        },
+        "numberOfElements": 1,
+        "first": true,
+        "empty": false
+    }
