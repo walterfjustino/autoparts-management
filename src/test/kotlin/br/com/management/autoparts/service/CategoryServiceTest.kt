@@ -1,41 +1,81 @@
 package br.com.management.autoparts.service
 
-import br.com.management.autoparts.categories.service.CategoryService
-import com.github.tomakehurst.wiremock.WireMockServer
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import br.com.management.autoparts.config.BaseTest
+import br.com.management.autoparts.utils.FileUtils
+import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.google.gson.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.function.Executable
+import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ContextConfiguration
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = [WiremockContextInitializer::class])
-class CategoryServiceTest : CategoryServiceMock{
+class CategoryServiceTest: BaseTest() {
 
-    @Autowired private lateinit var service: CategoryService
-    @Autowired private lateinit var wireMockServer: WireMockServer
-//    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    @Autowired
+    private lateinit var fileUtils: FileUtils
 
-    @AfterEach
-    fun afterEach() {
-        wireMockServer.resetAll()
-    }
+    @Mock
+    private lateinit var mock: CategoryServiceMock
+
+//    private val logger: Logger = LoggerFactory.getLogger(CategoryServiceTest::class.java)
+
     @Test
-    fun `GET category by Id`() {
-    mockGetCategoryById(wireMockServer,"shouldBeCreatedCategoryWithResponseBody.json","4")
+    @Throws(Exception::class)
+    fun `should create category`() {
+        val path = "/api/categories"
+        val requestBody = fileUtils.loadGeneratedFile("/__files/shouldBeCreateCategoryWithRequestBody.json")
+        val responseBody = fileUtils.loadGeneratedFile("/__files/shouldBeCreatedCategoryWithResponseBody.json")
 
-        val category= service.getById(4);
+        println("payload: $requestBody  -> response: $responseBody")
+        mock.mockPostCategory(requestBody, responseBody)
 
-        Assertions.assertAll(
-            Executable { assertNotNull(category) },
-            Executable { assertEquals("Brinquedos", category.name) },
-            Executable { assertEquals(4, category.id) }
-        )
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(path)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+        ).andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andExpect(MockMvcResultMatchers.content().string(responseBody))
+    }
 
+    @Test
+    @Throws(Exception::class)
+    fun `should return category by id`() {
+        val id = "4"
+        val url = "/api/categories/$id"
+        val responseBody = fileUtils.loadGeneratedFile("/__files/shouldBeCreatedCategoryWithResponseBody.json")
+
+        mock.mockGetCategoryById(responseBody, id)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string(responseBody))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `should return all categories paginated `() {
+        val url = "/api/categories".plus("/all")
+        val responseBody = fileUtils.loadGeneratedFile("/__files/ShouldBeReturnedAllCategoriesPaginated.json")
+
+        mock.mockGetCategoryAll(responseBody)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string(responseBody))
     }
 }
+
+

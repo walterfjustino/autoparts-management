@@ -28,7 +28,8 @@ class CategoryServiceImpl(private val repository: CategoryRepository,
 //    private lateinit var mapper: CategoryMapper;
 
     override fun createCategory(categoryDTO: CategoryDTO): CategoryDTO {
-        return mapper.toDTO(repository.save(mapper.toModel(categoryDTO)));
+        val toModel = mapper.toModel(categoryDTO)
+        return mapper.toDTO(repository.save(toModel))
     }
 
     override fun getByName(name: String): CategoryDTO {
@@ -76,18 +77,18 @@ class CategoryServiceImpl(private val repository: CategoryRepository,
     }
 
     override fun updatePartial(id: Long, fields: Map<String, Any>): CategoryDTO {
-        val foundCategoryDTO = repository.getReferenceById(id);
+        val foundCategoryDTO = repository.getReferenceById(id)
         fields.forEach{ (key, value) ->
             val findField = ReflectionUtils.findField(Category::class.java, key)!!
             findField.setAccessible(true);
-            ReflectionUtils.setField(findField, foundCategoryDTO, value);
+            ReflectionUtils.setField(findField, foundCategoryDTO, value)
         }
         return mapper.toDTO(repository.save(foundCategoryDTO))
     }
 
     override fun delete(id: Long) {
         getById(id)
-        repository.deleteById(id);
+        repository.deleteById(id)
     }
 
 }

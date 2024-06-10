@@ -8,14 +8,14 @@ data class Category(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long,
+        val id: Long,
 
         @Column(nullable = false, unique = true)
-        var name: String,
+        val name: String,
 
         @Column
-        var active: Boolean,
+        val active: Boolean,
 
         @Column
-        var type: String
+        val type: String
 )
