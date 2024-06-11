@@ -23,8 +23,6 @@ class CategoryServiceTest: BaseTest() {
     @Mock
     private lateinit var mock: CategoryServiceMock
 
-//    private val logger: Logger = LoggerFactory.getLogger(CategoryServiceTest::class.java)
-
     @Test
     @Throws(Exception::class)
     fun `should create category`() {
