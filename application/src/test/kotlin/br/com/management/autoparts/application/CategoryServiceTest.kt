@@ -1,6 +1,7 @@
-package br.com.management.autoparts.service
+package br.com.management.autoparts.application
 
 import br.com.management.autoparts.config.BaseTest
+import br.com.management.autoparts.service.CategoryServiceMock
 import br.com.management.autoparts.utils.FileUtils
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.google.gson.*

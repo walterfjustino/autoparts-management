@@ -19,11 +19,15 @@
 		<module>categories</module>
 		<module>parts</module>
 		<module>application</module>
+		<module>entities</module>
+		<module>web</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>
 		<kotlin.version>2.0.10</kotlin.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
+		<h2.version>2.1.214</h2.version>
+		<wiremock.version>3.4.2</wiremock.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -73,7 +77,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.1.214</version>
+			<version>${h2.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -89,7 +93,7 @@
 		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock</artifactId>
-			<version>3.4.2</version>
+			<version>${wiremock.version}</version>
 			<scope>test</scope>
 		</dependency>
 

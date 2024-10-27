@@ -1,4 +1,4 @@
-package br.com.management.autoparts.categories.handler
+package br.com.management.autoparts.web.handler
 
 import jakarta.persistence.EntityExistsException
 import jakarta.persistence.EntityNotFoundException

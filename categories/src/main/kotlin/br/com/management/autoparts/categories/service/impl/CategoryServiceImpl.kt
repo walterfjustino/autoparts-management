@@ -5,7 +5,7 @@ import br.com.management.autoparts.categories.mapper.CategoryMapper
 import br.com.management.autoparts.categories.model.Category
 import br.com.management.autoparts.categories.model.dto.CategoryDTO
 import br.com.management.autoparts.categories.repository.CategoryRepository
-import org.springframework.beans.factory.annotation.Autowired
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -13,19 +13,16 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.util.ReflectionUtils
-import java.util.stream.Collectors
+
 
 
 @Service
-class CategoryServiceImpl(private val repository: CategoryRepository,
-                          private val mapper: CategoryMapper
+class CategoryServiceImpl(
+    private val repository: CategoryRepository,
+    private val mapper: CategoryMapper
 ): CategoryService {
 
-//    @Autowired
-//    private lateinit var repository: CategoryRepository;
-//
-//    @Autowired
-//    private lateinit var mapper: CategoryMapper;
+    private val logger: Logger = LoggerFactory.getLogger(CategoryServiceImpl::class)
 
     override fun createCategory(categoryDTO: CategoryDTO): CategoryDTO {
         val toModel = mapper.toModel(categoryDTO)
@@ -47,7 +44,6 @@ class CategoryServiceImpl(private val repository: CategoryRepository,
         return repository.findAll()
             .map(mapper::toDTO)
             .toList()
-
     }
 
     override fun pageGetFilter(searchTerm: String, page: Int, size: Int): Page<CategoryDTO> {

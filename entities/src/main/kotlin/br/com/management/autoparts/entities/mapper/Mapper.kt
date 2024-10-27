@@ -1,4 +1,4 @@
-package br.com.management.autoparts.categories.mapper
+package br.com.management.autoparts.entities.mapper
 
 interface Mapper<T, U> {
 

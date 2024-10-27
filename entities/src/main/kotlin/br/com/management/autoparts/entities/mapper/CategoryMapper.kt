@@ -1,11 +1,11 @@
-package br.com.management.autoparts.categories.mapper
+package br.com.management.autoparts.entities.mapper
 
 import br.com.management.autoparts.categories.model.Category
 import br.com.management.autoparts.categories.model.dto.CategoryDTO
 import org.springframework.stereotype.Component
 
 @Component
-class CategoryMapper : Mapper<CategoryDTO, Category>{
+class CategoryMapper : Mapper<CategoryDTO, Category> {
 
     override fun toModel(t: CategoryDTO): Category {
         return Category(
