@@ -8,27 +8,55 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
+	<packaging>pom</packaging>
+
 	<groupId>br.com.management</groupId>
 	<artifactId>auto-parts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
 	<name>auto-parts</name>
 	<description>Api for management auto parts with Spring Boot and Kotlin</description>
+
 	<modules>
-		<module>customers</module>
-		<module>categories</module>
-		<module>parts</module>
+		<module>gatewayRepository</module>
+		<module>customersRepository</module>
+		<module>categoriesRepository</module>
+		<module>partsRepository</module>
 		<module>application</module>
 		<module>entities</module>
+		<module>usecases</module>
 		<module>web</module>
 	</modules>
+
 	<properties>
 		<java.version>17</java.version>
-		<kotlin.version>2.0.10</kotlin.version>
+		<kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
+		<kotlin.version>1.8.10</kotlin.version>
+		<serialization.version>1.8.1</serialization.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<h2.version>2.1.214</h2.version>
 		<wiremock.version>3.4.2</wiremock.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>mavenCentral</id>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -51,12 +79,34 @@
 			<artifactId>jackson-module-kotlin</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.jetbrains.kotlinx</groupId>
+			<artifactId>kotlinx-serialization-json</artifactId>
+			<version>${serialization.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlinx</groupId>
+			<artifactId>kotlinx-datetime-jvm</artifactId>
+			<version>0.6.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-reflect</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib-jdk8</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-test</artifactId>
+			<version>${kotlin.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,7 +146,6 @@
 			<version>${wiremock.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -107,41 +156,39 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.mockk</groupId>
+			<artifactId>mockk</artifactId>
+			<version>1.14.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<build>
-		<sourceDirectory>${project.basedir}/src/br.com.management.autoparts.application.main/kotlin</sourceDirectory>
-		<testSourceDirectory>application/src/test/kotlin</testSourceDirectory>
+		<!-- fontes Kotlin -->
+		<sourceDirectory>src/main/kotlin</sourceDirectory>
+		<testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+			<!-- Kotlin Compiler -->
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>${kotlin.version}</version>
+				<extensions>true</extensions>
 				<configuration>
+					<jvmTarget>${java.version}</jvmTarget>
 					<args>
 						<arg>-Xjsr305=strict</arg>
 					</args>
 					<compilerPlugins>
-						<plugin>spring</plugin>
-						<plugin>jpa</plugin>
+						<plugin>all-open</plugin>
+						<plugin>no-arg</plugin>
+						<plugin>kotlinx-serialization</plugin>
 					</compilerPlugins>
 				</configuration>
 				<dependencies>
+					<!-- força o Maven a baixar os dois plugins -->
 					<dependency>
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-allopen</artifactId>
@@ -152,9 +199,43 @@
 						<artifactId>kotlin-maven-noarg</artifactId>
 						<version>${kotlin.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-serialization</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
 				</dependencies>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<goals><goal>compile</goal></goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<goals><goal>test-compile</goal></goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Java Compiler (se houver Java puro) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<!-- Spring Boot Repackage -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>br.com.management.autoparts.AutoPartsApplicationKt</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

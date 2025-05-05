@@ -1,4 +1,4 @@
-package br.com.management.autoparts.categories.handler
+package br.com.management.autoparts.entities.domain
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime

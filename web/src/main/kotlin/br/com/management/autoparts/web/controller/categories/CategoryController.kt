@@ -1,10 +1,8 @@
-package br.com.management.autoparts.categories.controller
+package br.com.management.autoparts.web.controller.categories
 
-import br.com.management.autoparts.categories.model.dto.CategoryDTO
 import br.com.management.autoparts.categories.service.CategoryService
+import br.com.management.autoparts.entities.dto.CategoryDTO
 import jakarta.validation.Valid
-import org.hibernate.engine.jdbc.Size
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,10 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/categories")
-class CategoryController {
-
-    @Autowired
-    private lateinit var service: CategoryService
+class CategoryController(val service: CategoryService) {
 
     @PostMapping
     fun create(@RequestBody @Valid categoryDTO: CategoryDTO): ResponseEntity<CategoryDTO> {

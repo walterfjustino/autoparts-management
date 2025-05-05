@@ -1,4 +1,4 @@
-package br.com.management.autoparts.categories.model
+package br.com.management.autoparts.entities.domain
 
 import jakarta.persistence.*
 

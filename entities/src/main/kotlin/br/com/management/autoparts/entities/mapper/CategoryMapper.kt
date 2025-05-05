@@ -1,7 +1,7 @@
 package br.com.management.autoparts.entities.mapper
 
-import br.com.management.autoparts.categories.model.Category
-import br.com.management.autoparts.categories.model.dto.CategoryDTO
+import br.com.management.autoparts.entities.domain.Category
+import br.com.management.autoparts.entities.dto.CategoryDTO
 import org.springframework.stereotype.Component
 
 @Component

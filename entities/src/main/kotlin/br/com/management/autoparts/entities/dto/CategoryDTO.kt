@@ -1,4 +1,4 @@
-package br.com.management.autoparts.categories.model.dto
+package br.com.management.autoparts.entities.dto
 
 import jakarta.validation.constraints.NotEmpty
 

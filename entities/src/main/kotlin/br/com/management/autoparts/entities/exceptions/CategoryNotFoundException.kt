@@ -1,6 +1,6 @@
-package br.com.management.autoparts.categories.exceptions
+package br.com.management.autoparts.entities.exceptions
 
-import br.com.management.autoparts.categories.enums.ExceptionMessagesEnum
+import br.com.management.autoparts.entities.enums.ExceptionMessagesEnum
 import jakarta.persistence.EntityNotFoundException
 
 class CategoryNotFoundException : EntityNotFoundException {

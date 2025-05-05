@@ -1,4 +1,4 @@
-package br.com.management.autoparts.categories.enums
+package br.com.management.autoparts.entities.enums
 
 import org.springframework.http.HttpStatus
 

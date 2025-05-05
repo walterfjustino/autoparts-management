@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 
 @SpringBootApplication
-@ComponentScan(basePackages = ["br.com.management.autoparts"])
+@ComponentScan(basePackages = ["br.com.management.autoparts.*"])
 class AutoPartsApplication
 
 fun main(args: Array<String>) {
